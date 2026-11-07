@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Health Hub — trusted health information in your language</title>
+  <meta name="description" content="One home for four health portals, each written from trusted sources, translated into Tamil, Sinhala, Hindi and Bengali, and checked by a person.">
+  <meta name="theme-color" content="#14161f">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%2314161f%27/%3E%3Cpath d=%27M13 7h6v6h6v6h-6v6h-6v-6H7v-6h6z%27 fill=%27white%27/%3E%3C/svg%3E">
+  <style>
+    /* Layout: dark intro band, then one card per portal in a responsive grid. Colours come from each portal's own accent. */
+    :root {
+      --ink: #14161f; --paper: #ffffff; --page: #f5f6f8; --muted: #5a6070; --line: #e1e4ea;
+      --font: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Tamil", "Noto Sans Sinhala", "Noto Sans Devanagari", "Noto Sans Bengali", "Nirmala UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--page); color: var(--ink); font: 17px/1.55 var(--font); }
+    .intro { background: linear-gradient(160deg, #14161f 0%, #1c2433 60%, #2a2238 100%); color: #f3f4f7; }
+    .intro-inner { max-width: 1080px; margin: 0 auto; padding: 64px 20px 72px; display: grid; gap: 16px; }
+    .kicker { margin: 0; font-size: 14px; letter-spacing: .04em; color: rgba(243,244,247,.7); }
+    h1 { margin: 0; font-size: clamp(32px, 5vw, 52px); line-height: 1.08; letter-spacing: -.02em; max-width: 18ch; text-wrap: balance; }
+    .lead { margin: 0; max-width: 62ch; color: rgba(243,244,247,.82); }
+    .langs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .langs span { border: 1px solid rgba(255,255,255,.2); border-radius: 999px; padding: 4px 12px; font-size: 15px; }
+    main { max-width: 1080px; margin: -36px auto 0; padding: 0 20px 64px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+    .card { position: relative; display: grid; gap: 10px; align-content: start; padding: 22px 22px 20px; background: var(--paper);
+            border: 1px solid var(--line); border-radius: 14px; color: inherit; text-decoration: none;
+            box-shadow: 0 1px 2px rgba(20,22,31,.05), 0 8px 24px rgba(20,22,31,.06); transition: transform .15s ease, box-shadow .15s ease; }
+    .card::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 5px; border-radius: 14px 14px 0 0; background: var(--c); }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 2px 4px rgba(20,22,31,.06), 0 14px 32px rgba(20,22,31,.10); }
+    .card:focus-visible { outline: 3px solid var(--c); outline-offset: 2px; }
+    .card h2 { margin: 6px 0 0; font-size: 21px; line-height: 1.2; }
+    .card p { margin: 0; color: var(--muted); font-size: 15.5px; }
+    .go { margin-top: 6px; font-weight: 600; color: var(--c); font-size: 15px; }
+    .how { margin-top: 40px; display: grid; gap: 10px; max-width: 70ch; }
+    .how h2 { margin: 0; font-size: 22px; }
+    .how ol { margin: 0; padding-left: 22px; display: grid; gap: 6px; color: var(--muted); }
+    footer { border-top: 1px solid var(--line); padding: 24px 20px; text-align: center; color: var(--muted); font-size: 14px; }
+    @media (prefers-reduced-motion: reduce) { .card { transition: none; } .card:hover { transform: none; } }
+  </style>
+</head>
+<body>
+  <section class="intro">
+    <div class="intro-inner">
+      <p class="kicker">Four portals · one place</p>
+      <h1>Trusted health information, in the language you speak.</h1>
+      <p class="lead">Each portal writes plain-language guides only from trusted sources, translates them automatically, and marks them Verified only after a person has checked them.</p>
+      <div class="langs" aria-label="Languages">
+        <span lang="en">English</span><span lang="ta">தமிழ்</span><span lang="si">සිංහල</span><span lang="hi">हिन्दी</span><span lang="bn">বাংলা</span>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <div class="grid" id="portals" aria-label="Portals"></div>
+    <section class="how">
+      <h2>How every portal works</h2>
+      <ol>
+        <li>You search a topic.</li>
+        <li>The portal finds the facts on trusted sources; no source means no article.</li>
+        <li>AI writes a plain-language guide from those facts and links them.</li>
+        <li>It is translated into Tamil, Sinhala, Hindi and Bengali.</li>
+        <li>A short narrated video can be made in any language.</li>
+        <li>An administrator checks it and marks it Verified.</li>
+      </ol>
+    </section>
+  </main>
+
+  <footer>General health information only. Not a substitute for professional medical advice.</footer>
+
+  <script src="site-nav.js" data-site="hub"></script>
+  <script>
+    // Cards come from the same list as the navbar, so the two never disagree.
+    var grid = document.getElementById('portals');
+    (window.SuiteNav ? window.SuiteNav.sites : []).forEach(function (s) {
+      var a = document.createElement('a');
+      a.className = 'card';
+      a.href = s.url;
+      a.style.setProperty('--c', s.color);
+      var h = document.createElement('h2');
+      h.textContent = s.name;
+      var p = document.createElement('p');
+      p.textContent = s.blurb || '';
+      var go = document.createElement('span');
+      go.className = 'go';
+      go.textContent = 'Open ' + s.name + ' →';
+      a.append(h, p, go);
+      grid.append(a);
+    });
+  </script>
+</body>
+</html>
